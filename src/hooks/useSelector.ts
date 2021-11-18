@@ -1,6 +1,6 @@
 import { useSelector as useBaseSelector } from 'react-redux';
 
-import { Selector } from '../providers/StoreProvider';
+import { Selector } from '@/store';
 
 export type Equality<Selected> = (left: Selected, right: Selected) => boolean;
 

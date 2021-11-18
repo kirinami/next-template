@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import useSelector from '../../../hooks/useSelector';
+import useSelector from '@/hooks/useSelector';
 
 import { selectTodos } from './useTodos';
 

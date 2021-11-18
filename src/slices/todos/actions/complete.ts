@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import Todo from '../../../types/todo';
-import delay from '../../../utils/delay';
+import Todo from '@/types/todo';
+import delay from '@/utils/delay';
 
 type Req = Pick<Todo, 'id' | 'completed'>;
 

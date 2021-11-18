@@ -1,5 +1,5 @@
-import useSelector from '../../../hooks/useSelector';
-import { State } from '../../../providers/StoreProvider';
+import useSelector from '@/hooks/useSelector';
+import { State } from '@/store';
 
 export const selectTodos = (state: State) => state.todos.todos;
 

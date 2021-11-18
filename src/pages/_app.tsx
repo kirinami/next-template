@@ -1,10 +1,11 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import StoreProvider from '../providers/StoreProvider';
-import '../styles/_globals.scss';
+import { wrapper } from '@/store';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+import '@/styles/_globals.scss';
+
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
@@ -13,9 +14,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico"/>
       </Head>
 
-      <StoreProvider>
-        <Component {...pageProps} />
-      </StoreProvider>
+      <Component {...pageProps} />
     </>
   );
-}
+};
+
+export default wrapper.withRedux(MyApp);

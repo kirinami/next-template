@@ -1,16 +1,24 @@
-import { useAsync } from 'react-use';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
-import Spinner from '../components/Spinner';
-import Navbar from '../components/Navbar';
-import useAction from '../hooks/useAction';
-import todosAdd from '../slices/todos/actions/add';
-import todosComplete from '../slices/todos/actions/complete';
-import todosRetrieve from '../slices/todos/actions/retrieve';
-import useTodos from '../slices/todos/selectors/useTodos';
-import useCompletedTodos from '../slices/todos/selectors/useCompletedTodos';
-import styles from '../styles/index.module.scss';
+import Spinner from '@/components/Spinner';
+import Navbar from '@/components/Navbar';
+import useAction from '@/hooks/useAction';
+import todosAdd from '@/slices/todos/actions/add';
+import todosComplete from '@/slices/todos/actions/complete';
+import todosRetrieve from '@/slices/todos/actions/retrieve';
+import useTodos from '@/slices/todos/selectors/useTodos';
+import useCompletedTodos from '@/slices/todos/selectors/useCompletedTodos';
+import styles from '@/styles/index.module.scss';
+import { wrapper } from '@/store';
+
+export const getServerSideProps = wrapper.getServerSideProps(({ dispatch, getState }) => async () => {
+  await dispatch(todosRetrieve());
+
+  return {
+    props: {},
+  };
+});
 
 const Home: NextPage = () => {
   const [addTodo, addTodoState] = useAction(todosAdd);
@@ -30,8 +38,6 @@ const Home: NextPage = () => {
       completed,
     }, id);
   };
-
-  useAsync(() => retrieveTodos(), [retrieveTodos]);
 
   return (
     <>
@@ -83,7 +89,13 @@ const Home: NextPage = () => {
               {addTodoState('loading') || completeTodoState('loading')
                 ? <Spinner variant="secondary" size="xs"/>
                 : (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
                   </svg>
                 )}
@@ -106,7 +118,7 @@ const Home: NextPage = () => {
           >
             Powered by{' '}
             <span className={styles.logo}>
-            <Image src={require('../assets/vercel.svg').default.src} alt="Vercel Logo" width={72} height={16}/>
+            <Image src={require('@/assets/vercel.svg').default.src} alt="Vercel Logo" width={72} height={16}/>
           </span>
           </a>
         </footer>

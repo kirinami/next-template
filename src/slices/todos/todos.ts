@@ -1,6 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { AnyAction, createSlice } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
+import merge from 'lodash/merge';
 
-import Todo from '../../types/todo';
+import Todo from '@/types/todo';
 
 import todosAdd from './actions/add';
 import todosComplete from './actions/complete';
@@ -19,6 +21,8 @@ const todosSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(HYDRATE, (state, { payload }: AnyAction) => merge(state, payload.todos));
+
     builder.addCase(todosAdd.fulfilled, (state, { payload }) => {
       state.todos.push(payload);
     });
