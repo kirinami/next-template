@@ -1,3 +1,5 @@
+import ThemeToggle from './ThemeToggle';
+
 export default function Navbar() {
   return (
     <nav className="bg-white shadow dark:bg-gray-800">
@@ -33,22 +35,32 @@ export default function Navbar() {
             <a
               className="my-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 md:mx-4 md:my-0"
               href="#"
-            >Home</a>
+            >
+              Home
+            </a>
             <a
               className="my-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 md:mx-4 md:my-0"
               href="#"
-            >Shop</a>
+            >
+              Shop
+            </a>
             <a
               className="my-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 md:mx-4 md:my-0"
               href="#"
-            >Contact</a>
+            >
+              Contact
+            </a>
             <a
               className="my-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 md:mx-4 md:my-0"
               href="#"
-            >About</a>
+            >
+              About
+            </a>
           </div>
 
           <div className="flex justify-center md:block">
+            <ThemeToggle/>
+            {/*
             <a className="relative text-gray-700 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-300" href="#">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -62,6 +74,7 @@ export default function Navbar() {
 
               <span className="absolute top-0 left-0 p-1 text-xs text-white bg-indigo-500 rounded-full"></span>
             </a>
+            */}
           </div>
         </div>
       </div>

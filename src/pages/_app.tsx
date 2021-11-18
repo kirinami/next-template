@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
+import StoreProvider from '../providers/StoreProvider';
 import '../styles/_globals.scss';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -12,7 +13,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico"/>
       </Head>
 
-      <Component {...pageProps} />
+      <StoreProvider>
+        <Component {...pageProps} />
+      </StoreProvider>
     </>
   );
 }

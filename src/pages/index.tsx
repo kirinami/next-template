@@ -1,16 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useAsync } from 'react-use';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
+import Spinner from '../components/Spinner';
 import Navbar from '../components/Navbar';
+import useAction from '../hooks/useAction';
+import todosAdd from '../slices/todos/actions/add';
+import todosComplete from '../slices/todos/actions/complete';
+import todosRetrieve from '../slices/todos/actions/retrieve';
+import useTodos from '../slices/todos/selectors/useTodos';
+import useCompletedTodos from '../slices/todos/selectors/useCompletedTodos';
 import styles from '../styles/index.module.scss';
 
 const Home: NextPage = () => {
-  const [theme, setTheme] = useState('light');
+  const [addTodo, addTodoState] = useAction(todosAdd);
+  const [completeTodo, completeTodoState] = useAction(todosComplete);
+  const [retrieveTodos, retrieveTodosState] = useAction(todosRetrieve);
 
-  useEffect(() => {
-    document.documentElement.className = theme;
-  }, [theme]);
+  const todos = useTodos();
+  const completedTodos = useCompletedTodos();
+
+  const addTodoHandler = async () => {
+    await addTodo({ title: prompt('Item title:') || 'Untitled' });
+  };
+
+  const completeTodoHandler = async (id: number, completed: boolean) => {
+    await completeTodo({
+      id,
+      completed,
+    }, id);
+  };
+
+  useAsync(() => retrieveTodos(), [retrieveTodos]);
 
   return (
     <>
@@ -27,42 +48,53 @@ const Home: NextPage = () => {
             <code className={styles.code}>pages/index.tsx</code>
           </p>
 
-          <button
-            type="button"
-            className="px-4 py-2 rounded bg-red-500 hover:opacity-80"
-            onClick={() => setTheme(theme => theme === 'light' ? 'dark' : 'light')}
-          >
-            Toggle theme: {theme}
-          </button>
+          <div className="container mx-auto p-8 space-y-8">
+            <h3 className="font-semibold text-2xl">Home</h3>
 
-          <div className={styles.grid}>
-            <a href="https://nextjs.org/docs" className={styles.card}>
-              <h2>Documentation &rarr;</h2>
-              <p>Find in-depth information about Next.js features and API.</p>
-            </a>
+            {retrieveTodosState('loading') && (
+              <Spinner/>
+            )}
 
-            <a href="https://nextjs.org/learn" className={styles.card}>
-              <h2>Learn &rarr;</h2>
-              <p>Learn about Next.js in an interactive course with quizzes!</p>
-            </a>
+            <ul>
+              {todos.map(todo => (
+                <li key={todo.id}>
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    {completeTodoState('loading', todo.id)
+                      ? <Spinner size="xs"/>
+                      : (
+                        <input
+                          type="checkbox"
+                          className="border-green-600 rounded text-green-600 bg-white focus:ring-0"
+                          checked={todo.completed}
+                          onChange={event => completeTodoHandler(todo.id, event.target.checked)}
+                        />
+                      )}
+                    <span>{todo.title}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
 
-            <a
-              href="https://github.com/vercel/next.js/tree/master/examples"
-              className={styles.card}
+            <button
+              type="button"
+              className="flex justify-center items-center px-6 py-3 space-x-3 rounded text-white bg-green-600 hover:bg-green-700 cursor-pointer"
+              onClick={addTodoHandler}
             >
-              <h2>Examples &rarr;</h2>
-              <p>Discover and deploy boilerplate example Next.js projects.</p>
-            </a>
+              {addTodoState('loading') || completeTodoState('loading')
+                ? <Spinner variant="secondary" size="xs"/>
+                : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
+                  </svg>
+                )}
+              <span>Add item</span>
+            </button>
 
-            <a
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
-            >
-              <h2>Deploy &rarr;</h2>
-              <p>
-                Instantly deploy your Next.js site to a public URL with Vercel.
-              </p>
-            </a>
+            <pre>{JSON.stringify(todos, null, 2)}</pre>
+
+            <hr/>
+
+            <pre>{JSON.stringify(completedTodos, null, 2)}</pre>
           </div>
         </main>
 
