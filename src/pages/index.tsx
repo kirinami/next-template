@@ -1,65 +1,85 @@
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
-import styles from '../styles/index.module.css';
+import Navbar from '../components/Navbar';
+import styles from '../styles/index.module.scss';
 
 const Home: NextPage = () => {
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    document.documentElement.className = theme;
+  }, [theme]);
+
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+    <>
+      <Navbar/>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
+      <div className={styles.container}>
+        <main className={styles.main}>
+          <h1 className={styles.title}>
+            Welcome to <a href="https://nextjs.org">Next.js!</a>
+          </h1>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+          <p className={styles.description}>
+            Get started by editing{' '}
+            <code className={styles.code}>pages/index.tsx</code>
+          </p>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
+          <button
+            type="button"
+            className="px-4 py-2 rounded bg-red-500 hover:opacity-80"
+            onClick={() => setTheme(theme => theme === 'light' ? 'dark' : 'light')}
           >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+            Toggle theme: {theme}
+          </button>
 
+          <div className={styles.grid}>
+            <a href="https://nextjs.org/docs" className={styles.card}>
+              <h2>Documentation &rarr;</h2>
+              <p>Find in-depth information about Next.js features and API.</p>
+            </a>
+
+            <a href="https://nextjs.org/learn" className={styles.card}>
+              <h2>Learn &rarr;</h2>
+              <p>Learn about Next.js in an interactive course with quizzes!</p>
+            </a>
+
+            <a
+              href="https://github.com/vercel/next.js/tree/master/examples"
+              className={styles.card}
+            >
+              <h2>Examples &rarr;</h2>
+              <p>Discover and deploy boilerplate example Next.js projects.</p>
+            </a>
+
+            <a
+              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+              className={styles.card}
+            >
+              <h2>Deploy &rarr;</h2>
+              <p>
+                Instantly deploy your Next.js site to a public URL with Vercel.
+              </p>
+            </a>
+          </div>
+        </main>
+
+        <footer className={styles.footer}>
           <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
+            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16}/>
+            Powered by{' '}
+            <span className={styles.logo}>
+            <Image src={require('../assets/vercel.svg').default.src} alt="Vercel Logo" width={72} height={16}/>
           </span>
-        </a>
-      </footer>
-    </div>
+          </a>
+        </footer>
+      </div>
+    </>
   );
 };
 
