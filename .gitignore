@@ -1,0 +1,41 @@
+### Default template
+# system
+.DS_Store
+
+# ide
+.idea/*
+!.idea/codeStyles
+!.idea/runConfigurations
+!.idea/encodings.xml
+!.idea/modules.xml
+!.idea/webResources.xml
+!.idea/*.iml
+!.idea/.gitignore
+
+# dependencies
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+node_modules
+yarn-debug.log*
+yarn-error.log*
+
+# compiled output
+.next
+.vercel
+coverage
+build
+dist
+out
+out-tsc
+tmp
+.eslintcache
+*.tsbuildinfo
+
+# misc
+.env.local
+.env.*.local
