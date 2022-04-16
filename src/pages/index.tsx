@@ -1,5 +1,7 @@
-import type { NextPage } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import Spinner from '@/components/Spinner';
 import Navbar from '@/components/Navbar';
@@ -12,15 +14,22 @@ import useCompletedTodos from '@/slices/todos/selectors/useCompletedTodos';
 import styles from '@/styles/index.module.scss';
 import { wrapper } from '@/store';
 
-export const getServerSideProps = wrapper.getServerSideProps(({ dispatch, getState }) => async () => {
+export const getServerSideProps = wrapper.getServerSideProps(({ dispatch }) => async ({ locale }) => {
+  const translations = await serverSideTranslations(locale || 'en_EN', ['common']);
+
   await dispatch(todosRetrieve());
 
   return {
-    props: {},
+    props: {
+      ...translations,
+    },
   };
 });
 
-const Home: NextPage = () => {
+export default function Home() {
+  const router = useRouter();
+  const { t } = useTranslation('common');
+
   const [addTodo, addTodoState] = useAction(todosAdd);
   const [completeTodo, completeTodoState] = useAction(todosComplete);
   const [retrieveTodos, retrieveTodosState] = useAction(todosRetrieve);
@@ -33,10 +42,7 @@ const Home: NextPage = () => {
   };
 
   const completeTodoHandler = async (id: number, completed: boolean) => {
-    await completeTodo({
-      id,
-      completed,
-    }, id);
+    await completeTodo({ id, completed }, id);
   };
 
   return (
@@ -45,14 +51,26 @@ const Home: NextPage = () => {
 
       <div className={styles.container}>
         <main className={styles.main}>
-          <h1 className={styles.title}>
-            Welcome to <a href="https://nextjs.org">Next.js!</a>
-          </h1>
+          <h1 className={styles.title}>{t('welcome')} to <a href="https://nextjs.org">Next.js!</a></h1>
+          <p className={styles.description}>Get started by editing <code className={styles.code}>pages/index.tsx</code></p>
 
-          <p className={styles.description}>
-            Get started by editing{' '}
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
+          <div className="flex flex-row items-center space-x-4">
+            <button
+              type="button"
+              className="px-4 py-2 bg-amber-500 text-warmGray-50 hover:opacity-80"
+              onClick={() => router.replace(router.pathname, router.asPath, { locale: 'en' })}
+            >
+              en_EN
+            </button>
+            <div>{router.locale}</div>
+            <button
+              type="button"
+              className="px-4 py-2 bg-amber-500 text-warmGray-50 hover:opacity-80"
+              onClick={() => router.replace(router.pathname, router.asPath, { locale: 'uk' })}
+            >
+              uk_UA
+            </button>
+          </div>
 
           <div className="container mx-auto p-8 space-y-8">
             <h3 className="font-semibold text-2xl">Home</h3>
@@ -125,6 +143,4 @@ const Home: NextPage = () => {
       </div>
     </>
   );
-};
-
-export default Home;
+}
