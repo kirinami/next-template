@@ -1,3 +1,4 @@
+import Modal from 'react-modal';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -13,6 +14,8 @@ import useTodos from '@/slices/todos/selectors/useTodos';
 import useCompletedTodos from '@/slices/todos/selectors/useCompletedTodos';
 import styles from '@/styles/index.module.scss';
 import { wrapper } from '@/store';
+
+Modal.setAppElement('#__next');
 
 export const getServerSideProps = wrapper.getServerSideProps(({ dispatch }) => async ({ locale }) => {
   const translations = await serverSideTranslations(locale || 'en_EN', ['common']);
@@ -48,6 +51,18 @@ export default function Home() {
   return (
     <>
       <Navbar/>
+
+      <Modal isOpen onRequestClose={() => console.log('Close')}>
+        <h2>Hello</h2>
+        <div>I am a modal</div>
+        <form>
+          <input/>
+          <button>tab navigation</button>
+          <button>stays</button>
+          <button>inside</button>
+          <button>the modal</button>
+        </form>
+      </Modal>
 
       <div className={styles.container}>
         <main className={styles.main}>

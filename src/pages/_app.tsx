@@ -1,10 +1,13 @@
-import type { AppProps } from 'next/app';
+import Modal from 'react-modal';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 
 import { wrapper } from '@/store';
 
 import '@/styles/_globals.scss';
+
+Modal.setAppElement('#__next');
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
